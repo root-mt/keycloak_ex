@@ -15,7 +15,7 @@ defmodule Keycloak.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Keycloak.Application, []}
+     # mod: {Keycloak.Application, []}
     ]
   end
 

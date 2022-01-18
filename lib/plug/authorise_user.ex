@@ -1,11 +1,13 @@
-defmodule Keycloak.AuthoriseUser do
+defmodule KeycloakEx.AuthoriseUser do
   import Plug.Conn
 
   def init(opts), do: opts
 
-  defp refresh_token(conn, t) do
+  defp refresh_token(conn, t, client) do
     IO.puts("--- REFRESH Token")
-    case Keycloak.Client.User.refresh_token(t) do
+    IO.inspect(client)
+    #Keycloak.Client.User.refresh_token(t)
+    case apply(client, :refresh_token, [t]) do
       {:ok, refresh_token} ->
         conn
         |> put_session(:token, refresh_token.token)
@@ -19,18 +21,18 @@ defmodule Keycloak.AuthoriseUser do
 
   defp check_token(nil, conn), do: conn |> send_resp(403, Jason.encode!(%{error: "Access Denied"})) |> halt()
 
-  defp check_token(t, conn) do
+  defp check_token(t, conn, client) do
     case OAuth2.AccessToken.expired?(t) do
       false ->
         conn
 
       true ->
-        refresh_token(conn, t)
+        refresh_token(conn, t, client)
     end
   end
 
-  def call(conn, _) do
+  def call(conn, opts) do
     get_session(conn, :token)
-    |> check_token(conn)
+    |> check_token(conn, opts[:client])
   end
 end
