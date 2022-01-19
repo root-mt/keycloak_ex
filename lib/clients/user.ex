@@ -11,9 +11,7 @@ defmodule KeycloakEx.Client.User do
 
       @spec new :: OAuth2.Client.t()
       def new do
-        IO.puts("--- Confing new #{__MODULE__}")
         conf = config()
-        IO.puts("-- new")
 
         OAuth2.Client.new([
           strategy: __MODULE__,
@@ -38,7 +36,7 @@ defmodule KeycloakEx.Client.User do
         OAuth2.Client.get_token!(new(), params, headers)
       end
 
-      def authorize_url(client, params) do
+      def authorize_url(client, params \\ []) do
         OAuth2.Strategy.AuthCode.authorize_url(client, params)
       end
 
