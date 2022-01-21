@@ -40,12 +40,12 @@ defmodule KeycloakEx.Client.Admin do
       defp response({:ok, resp}), do: Jason.decode!(resp.body)
       defp response(resp), do: resp
 
-      def get_request(url, body \\ nil) do
+      def get_request_realm(realm, url, body \\ nil) do
         conf = config()
 
         :get
         |> Finch.build(
-            "#{conf[:host_uri]}/auth/admin/realms/#{conf[:realm]}/#{url}",
+            "#{conf[:host_uri]}/auth/admin/realms/#{realm}/#{url}",
             [
               {"Authorization", "Bearer #{get_token().token.access_token}"},
               {"Accept", "application/json"}
@@ -56,20 +56,28 @@ defmodule KeycloakEx.Client.Admin do
         |> response
       end
 
-      def get_users() do
-        get_request("users")
+      def get_clients(realm) do
+        get_request_realm(realm, "clients")
       end
 
-      def get_user(id) do
-        get_request("users/#{id}")
+      def get_users(realm) do
+        get_request_realm(realm, "users")
       end
 
-      def get_user_count() do
-        get_request("users/count")
+      def get_user_by_username(realm, username) do
+        get_request_realm(realm, "users?username=#{username}")
       end
 
-      def get_users_profile() do
-        get_request("users/profile")
+      def get_user(realm, id) do
+        get_request_realm(realm, "users/#{id}")
+      end
+
+      def get_user_count(realm) do
+        get_request_realm(realm, "users/count")
+      end
+
+      def get_users_profile(realm) do
+        get_request_realm(realm, "users/profile")
       end
      end
   end
