@@ -43,7 +43,7 @@ defmodule Keycloak.MixProject do
       name: "keycloak_ex",
       # These are the default files included in the package
       files: ~w(lib priv .formatter.exs mix.exs README* readme* LICENSE*
-                license* CHANGELOG* changelog* src),
+                license* src),
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/root-mt/keycloak_ex"}
     ]
