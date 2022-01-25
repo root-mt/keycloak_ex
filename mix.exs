@@ -29,7 +29,8 @@ defmodule Keycloak.MixProject do
       {:oauth2, "~> 2.0"},
       {:finch, "~> 0.8"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
@@ -42,8 +43,7 @@ defmodule Keycloak.MixProject do
       # This option is only needed when you don't want to use the OTP application name
       name: "keycloak_ex",
       # These are the default files included in the package
-      files: ~w(lib priv .formatter.exs mix.exs README* readme* LICENSE*
-                license* src),
+      files: ~w(lib .formatter.exs mix.exs README* LICENSE),
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/root-mt/keycloak_ex"}
     ]

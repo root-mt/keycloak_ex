@@ -37,6 +37,15 @@ defmodule KeycloakEx.Client.Admin do
         }
       end
 
+      # Not needed for Login client
+      def authorize_url(_client, _params \\ []) do
+        nil
+      end
+
+      def get_token(_client, _params, _headers) do
+        nil
+      end
+
       defp response({:ok, resp}), do: Jason.decode!(resp.body)
       defp response(resp), do: resp
 
