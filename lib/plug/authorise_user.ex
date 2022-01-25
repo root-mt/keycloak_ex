@@ -4,9 +4,6 @@ defmodule KeycloakEx.AuthoriseUser do
   def init(opts), do: opts
 
   defp refresh_token(conn, t, client) do
-    IO.puts("--- REFRESH Token")
-    IO.inspect(client)
-    #Keycloak.Client.User.refresh_token(t)
     case client.refresh_token(t) do
       {:ok, refresh_token} ->
         conn

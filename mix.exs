@@ -4,10 +4,14 @@ defmodule Keycloak.MixProject do
   def project do
     [
       app: :keycloak_ex,
-      version: "0.1.0",
+      version: "0.0.1",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: description(),
+      package: package(),
+      name: "keycloak_ex",
+      source_url: "https://github.com/root-mt/keycloak_ex"
     ]
   end
 
@@ -26,6 +30,22 @@ defmodule Keycloak.MixProject do
       {:finch, "~> 0.8"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"}
+    ]
+  end
+
+  defp description() do
+    "A Keycloak integration"
+  end
+
+  defp package() do
+    [
+      # This option is only needed when you don't want to use the OTP application name
+      name: "keycloak_ex",
+      # These are the default files included in the package
+      files: ~w(lib priv .formatter.exs mix.exs README* readme* LICENSE*
+                license* CHANGELOG* changelog* src),
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/root-mt/keycloak_ex"}
     ]
   end
 end

@@ -12,8 +12,4 @@ defmodule Keycloak do
       :world
 
   """
-  # def fetch_token(params, header \\ []) do
-  #   IO.puts("--- FETCH TOKEN ---")
-  #   Keycloak.Client.get_token!(params)
-  # end
 end
