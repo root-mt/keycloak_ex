@@ -51,6 +51,19 @@ defmodule KeycloakEx.Client.User do
         |> Map.put(:token, t)
         |> OAuth2.Client.refresh_token()
       end
+
+      def get_token_state(access_token) do
+        conf = config()
+
+        OAuth2.Client.get(
+          new(),
+          "#{conf[:host_uri]}/auth/admin/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
+          [
+            {"Authorization", "Bearer #{access_token}"},
+            {"Accept", "application/json"}
+          ]
+        )
+      end
     end
   end
 end
