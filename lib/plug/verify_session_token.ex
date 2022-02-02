@@ -1,4 +1,4 @@
-defmodule KeycloakEx.AuthoriseUser do
+defmodule KeycloakEx.VerifySessionToken do
   import Plug.Conn
 
   def init(opts), do: opts
@@ -21,10 +21,21 @@ defmodule KeycloakEx.AuthoriseUser do
     |> Phoenix.Controller.redirect(external: client.authorize_url!())
   end
 
+  defp check_token_state(t, conn, client) do
+    case client.get_token_state(t) do
+      {:ok, resp} ->
+          IO.inspect(resp)
+          conn
+      err ->
+          err
+    end
+  end
+
   defp check_token(t, conn, client) do
     case OAuth2.AccessToken.expired?(t) do
       false ->
-        conn
+        # Token not expired verify that still valid
+        check_token_state(t, conn, client)
 
       true ->
         refresh_token(conn, t, client)

@@ -1,5 +1,4 @@
 defmodule KeycloakEx.Client.Admin do
-
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
       @otp_app opts[:otp_app]
@@ -12,29 +11,23 @@ defmodule KeycloakEx.Client.Admin do
       def new do
         conf = config()
 
-        OAuth2.Client.new([
+        OAuth2.Client.new(
           strategy: OAuth2.Strategy.Password,
           client_id: conf[:client_id],
-          token_url: "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token"
-        ])
+          token_url:
+            "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token"
+        )
         |> OAuth2.Client.put_serializer("application/json", Jason)
       end
 
       def get_token(headers \\ []) do
         conf = config()
-        OAuth2.Client.get_token!(new(), [username: conf[:username], password: conf[:password]], headers)
-      end
 
-      def child_spec() do
-        conf = config()
-        {
-          Finch,
-          name: __MODULE__,
-          pools: %{
-            :default => [size: 10],
-            "#{conf[:host_uri]}" => [size: 32, count: 8]
-          }
-        }
+        OAuth2.Client.get_token!(
+          new(),
+          [username: conf[:username], password: conf[:password]],
+          headers
+        )
       end
 
       # Not needed for Login client
@@ -52,17 +45,14 @@ defmodule KeycloakEx.Client.Admin do
       def get_request_realm(realm, url, body \\ nil) do
         conf = config()
 
-        :get
-        |> Finch.build(
-            "#{conf[:host_uri]}/auth/admin/realms/#{realm}/#{url}",
-            [
-              {"Authorization", "Bearer #{get_token().token.access_token}"},
-              {"Accept", "application/json"}
-            ],
-            body
-          )
-        |> Finch.request(__MODULE__)
-        |> response
+        OAuth2.Client.get(
+          new(),
+          "#{conf[:host_uri]}/auth/admin/realms/#{realm}/#{url}",
+          [
+            {"Authorization", "Bearer #{get_token().token.access_token}"},
+            {"Accept", "application/json"}
+          ]
+        )
       end
 
       def get_clients(realm) do
@@ -88,6 +78,6 @@ defmodule KeycloakEx.Client.Admin do
       def get_users_profile(realm) do
         get_request_realm(realm, "users/profile")
       end
-     end
+    end
   end
 end
