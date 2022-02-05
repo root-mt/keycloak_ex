@@ -18,8 +18,8 @@ defmodule KeycloakEx.VerifyBearerToken do
   defp check_token(t, conn, client) do
     case client.get_token_state(t) do
       {:ok, resp} ->
-          IO.inspect(resp)
           conn
+
       err ->
           err
     end

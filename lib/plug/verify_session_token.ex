@@ -24,8 +24,8 @@ defmodule KeycloakEx.VerifySessionToken do
   defp check_token_state(t, conn, client) do
     case client.get_token_state(t) do
       {:ok, resp} ->
-          IO.inspect(resp)
           conn
+
       err ->
           err
     end
