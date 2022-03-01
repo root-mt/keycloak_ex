@@ -4,7 +4,7 @@ defmodule Keycloak.MixProject do
   def project do
     [
       app: :keycloak_ex,
-      version: "0.0.1",
+      version: "0.0.2",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -27,10 +27,10 @@ defmodule Keycloak.MixProject do
   defp deps do
     [
       {:oauth2, "~> 2.0"},
-      {:finch, "~> 0.8"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:httpoison, "~> 1.7"}
     ]
   end
 

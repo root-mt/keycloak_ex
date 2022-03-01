@@ -1,6 +1,6 @@
 defmodule KeycloakEx do
   @moduledoc """
-  A Keycloak clinet with focus on ease of use. KeycloakEx is still in alpha.
+  A Keycloak client with focus on ease of use. KeycloakEx is still in alpha.
 
   #Usage
 
@@ -44,13 +44,13 @@ defmodule KeycloakEx do
       defmodule TestApp.KeycloakAdmin do
           use KeycloakEx.Client.Admin,
             otp_app: :test_app
-       end
+      end
 
   # Plugs
 
   To use plug in the router add:
 
-    plug KeycloakEx.VerifySessionToken, client: TestApp.KeycloakClient
+      plug KeycloakEx.VerifySessionToken, client: TestApp.KeycloakClient
 
   """
 

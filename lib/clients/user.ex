@@ -55,14 +55,27 @@ defmodule KeycloakEx.Client.User do
       def get_token_state(access_token) do
         conf = config()
 
-        OAuth2.Client.get(
-          new(),
-          "#{conf[:host_uri]}/auth/admin/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
-          [
-            {"Authorization", "Bearer #{access_token}"},
-            {"Accept", "application/json"}
-          ]
-        )
+        params = "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
+
+        resp =
+          HTTPoison.post(
+            "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
+            params,
+            [
+              {"Accept", "application/json"},
+              {"Content-Type", "application/x-www-form-urlencoded"}
+            ]
+          )
+          |> IO.inspect
+
+        # OAuth2.Client.get(
+        #   new(),
+        #   "#{conf[:host_uri]}/auth/admin/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
+        #   [
+        #     {"Authorization", "Bearer #{access_token}"},
+        #     {"Accept", "application/json"}
+        #   ]
+        # )
       end
     end
   end
