@@ -52,22 +52,26 @@ defmodule KeycloakEx.Client.User do
         |> OAuth2.Client.refresh_token()
       end
 
-      def get_token_state(access_token) do
+      def introspect(access_token) do
         conf = config()
-
-        params = "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
 
         resp =
           HTTPoison.post(
             "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
-            params,
+            "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}",
             [
               {"Accept", "application/json"},
               {"Content-Type", "application/x-www-form-urlencoded"}
             ]
           )
-          |> IO.inspect
-      end
+
+        case resp do
+          {:ok, poison_response} ->
+            {:ok, Jason.decode!(poison_response.body)}
+
+          err ->
+            {:error}
+        end
     end
   end
 end
