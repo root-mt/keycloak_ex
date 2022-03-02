@@ -69,9 +69,11 @@ defmodule KeycloakEx.Client.User do
           {:ok, poison_response} ->
             {:ok, Jason.decode!(poison_response.body)}
 
-          err ->
+          _err ->
             {:error}
         end
+      end
     end
   end
+
 end

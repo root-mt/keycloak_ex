@@ -27,7 +27,7 @@ defmodule KeycloakEx.VerifyBearerToken do
       {:ok, resp} ->
         if resp["active"] == true, do: conn, else: redirect_401(conn)
 
-      err ->
+      _err ->
         redirect_401(conn)
     end
   end
