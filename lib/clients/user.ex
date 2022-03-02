@@ -67,15 +67,6 @@ defmodule KeycloakEx.Client.User do
             ]
           )
           |> IO.inspect
-
-        # OAuth2.Client.get(
-        #   new(),
-        #   "#{conf[:host_uri]}/auth/admin/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
-        #   [
-        #     {"Authorization", "Bearer #{access_token}"},
-        #     {"Accept", "application/json"}
-        #   ]
-        # )
       end
     end
   end
