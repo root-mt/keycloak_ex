@@ -15,7 +15,7 @@ defmodule KeycloakEx.Client.Admin do
           strategy: OAuth2.Strategy.Password,
           client_id: conf[:client_id],
           token_url:
-            "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token"
+            "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token"
         )
         |> OAuth2.Client.put_serializer("application/json", Jason)
       end
@@ -47,7 +47,7 @@ defmodule KeycloakEx.Client.Admin do
 
         OAuth2.Client.get(
           new(),
-          "#{conf[:host_uri]}/auth/admin/realms/#{realm}/#{url}",
+          "#{conf[:host_uri]}/admin/realms/#{realm}/#{url}",
           [
             {"Authorization", "Bearer #{get_token().token.access_token}"},
             {"Accept", "application/json"}

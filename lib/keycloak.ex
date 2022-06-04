@@ -1,6 +1,8 @@
 defmodule KeycloakEx do
   @moduledoc """
-  A Keycloak client with focus on ease of use. KeycloakEx is still in alpha.
+  A Keycloak client with focus on ease of use. From keycloak:18 there where some updates to the host_uri,
+  this plugin was update to remove /auth from the uri by default. **So if you are utilising an older version of
+  Keycloak its importat to add "/auth" as part of the host_uri ex:  host_uri: "http://localhost:8081/auth"**
 
   #Usage
 
@@ -13,7 +15,7 @@ defmodule KeycloakEx do
 
   # User Client
 
-  To create a User Client
+  To create a User Client. Configure it through the following list:
 
       config :test_app, TestApp.KeycloakClient,
         realm: "test_app",
@@ -22,6 +24,7 @@ defmodule KeycloakEx do
         scope: "testapp_scope",
         host_uri: "http://localhost:8081"
 
+  Create module with the user client code
 
       defmodule TestApp.KeycloakClient do
           use KeycloakEx.Client.User,
@@ -30,7 +33,7 @@ defmodule KeycloakEx do
 
   # Admin Client
 
-  To create an Admin Client
+  To create an Admin Client. Configure it through the following list:
 
       config :test_app, TestApp.KeycloakAdmin,
           realm: "master",
@@ -40,6 +43,7 @@ defmodule KeycloakEx do
           client_secret: "83bf8d8e-e608-477b-b812-48b9ac4aa43a",
           host_uri: "http://localhost:8081"
 
+  Create module with the admin client code
 
       defmodule TestApp.KeycloakAdmin do
           use KeycloakEx.Client.Admin,
@@ -48,9 +52,42 @@ defmodule KeycloakEx do
 
   # Plugs
 
-  To use plug in the router add:
+  keycloak_ex has 2 different plugs which can be used in different scenarions.
+
+  ## Verify Authorization Bearer Access Token
+
+  In the case when the access token is handled by a third party such as the front-end. Utilise the VerifyBearerToken,
+  the plug would check the token and introspect the values of it and redirect if incorret.
+
+
+      plug KeycloakEx.VerifyBearerToken, client: TestApp.KeycloakClient
+
+  ## Manage token from the backend.
+
+  In the case where the access token is managed by the backend in the plug session, utilise the VerifySessionToken.
 
       plug KeycloakEx.VerifySessionToken, client: TestApp.KeycloakClient
+
+  Its important to also handle the call back when handling the access token from the backend. For this add the
+  following route in the phoenix router.ex.
+
+      get "/login_cb", UserController, :login_redirect
+
+  In the controller its important to get the token from the code passed in the call back
+
+      defmodule TestApp.UserController do
+        use TestAppWeb, :controller
+
+        def login_redirect(conn, params) do
+          token =
+            TestApp.KeycloakClient.get_token!(code: params["code"])
+
+          conn
+          |> put_session(:token, token.token)
+          |> redirect(to: "/")
+          |> halt()
+        end
+      end
 
   """
 

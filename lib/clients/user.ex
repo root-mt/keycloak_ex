@@ -18,8 +18,8 @@ defmodule KeycloakEx.Client.User do
           client_id: conf[:client_id],
           redirect_uri: "#{conf[:site]}/login_cb",
           site: conf[:site],
-          authorize_url: "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/auth",
-          token_url: "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token"
+          authorize_url: "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/auth",
+          token_url: "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token"
         ])
         |> OAuth2.Client.put_serializer("application/json", Jason)
       end
@@ -57,7 +57,7 @@ defmodule KeycloakEx.Client.User do
 
         resp =
           HTTPoison.post(
-            "#{conf[:host_uri]}/auth/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
+            "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
             "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}",
             [
               {"Accept", "application/json"},
