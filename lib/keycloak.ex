@@ -1,21 +1,26 @@
 defmodule KeycloakEx do
   @moduledoc """
-  A Keycloak client with focus on ease of use. From keycloak:18 there where some updates to the host_uri,
-  this plugin was update to remove /auth from the uri by default. **So if you are utilising an older version of
-  Keycloak its importat to add "/auth" as part of the host_uri ex:  host_uri: "http://localhost:8081/auth"**
+  A Keycloak client to easily manage authenetication. with focus on ease of use.
 
-  #Usage
+  KeycloakEx is made up of clients and plugs. There are 2 clients:
 
-  KeycloakEx is split in 4:
+    * `KeycloakEx.Client.User` - Requires a client to be setup in keycloak and for security should be the primary client to be used. The client is utilised to verify tokens and redirect if the token is incorrect.
+    * `KeycloakEx.Client.Admin` - Admin Client to easily connect with keycload admin REST API, so as to be able to manage keycloak or get information that is not possible from clients.
 
-    * `KeycloakEx.Client.User` - User Client to easily redirect and handle oAuth2.0 tokens
-    * `KeycloakEx.Client.Admin` - Admin Client to easily connect with keycload admin REST API
-    * `KeycloakEx.VerifyBearerToken` - Plug to receive bearer token an verify valid
-    * `KeycloakEx.VerifySessionToken` = Plug to manage token part of elixir
+  There are also 2 plugs. Each usefull in different scenarios:
+    * `KeycloakEx.VerifyBearerToken` - Ideal for API scenarios where the token is not managed by the backend. Where the token is received in the header  as authorisation bearer token. The plug will verify  the validty of the token and responde accordingly.
+    * `KeycloakEx.VerifySessionToken` - Ideal for Phoenix HTML/Live views but the token is managed by the backend. Plug would manage token in the session.
 
-  # User Client
+  **NOTE**
+  From keycloak 18 there where a number of update one of which is the removel of "auth" from the host_uri.
+  The plugin was update to remove /auth from the uri by default. So if you are utilising an older version of
+  Keycloak its importat to add "/auth" as part of the host_uri ex:  host_uri: "http://localhost:8081/auth"
 
-  To create a User Client. Configure it through the following list:
+  #Setup
+
+  ## User Client
+
+  To create a User Client. Add the following snippet in a config.exs file:
 
       config :test_app, TestApp.KeycloakClient,
         realm: "test_app",
@@ -31,9 +36,9 @@ defmodule KeycloakEx do
             otp_app: :test_app
       end
 
-  # Admin Client
+  ## Admin Client
 
-  To create an Admin Client. Configure it through the following list:
+  To create an Admin Client. Add the following snippet in a config.exs file:
 
       config :test_app, TestApp.KeycloakAdmin,
           realm: "master",

@@ -1,6 +1,8 @@
 defmodule KeycloakEx.VerifySessionToken do
   import Plug.Conn
 
+  require Logger
+
   def init(opts), do: opts
 
   defp refresh_token(conn, t, client) do
@@ -9,26 +11,28 @@ defmodule KeycloakEx.VerifySessionToken do
         conn
         |> put_session(:token, refresh_token.token)
       {:error, err} ->
+        Logger.error("[VerifySessionToken:refresh_token] - #{inspect(err)}")
         conn
-        |> send_resp(403, Jason.encode!(%{error: "Access Denied"}))
+        |> Phoenix.Controller.redirect(external: client.authorize_url!())
         |> halt()
     end
 
   end
 
-  defp check_token(nil, conn, client) do
-    conn
-    |> Phoenix.Controller.redirect(external: client.authorize_url!())
-  end
-
   defp check_token_state(t, conn, client) do
-    case client.get_token_state(t) do
-      {:ok, resp} ->
+    case client.introspect(t.access_token) do
+      {:ok, _resp} ->
           conn
 
       err ->
           err
     end
+  end
+
+  defp check_token(nil, conn, client) do
+    conn
+    |> Phoenix.Controller.redirect(external: client.authorize_url!())
+    |> halt()
   end
 
   defp check_token(t, conn, client) do
