@@ -5,6 +5,8 @@ defmodule KeycloakEx.Client.User do
       @otp_app opts[:otp_app]
       use OAuth2.Strategy
 
+      require Logger
+
       def config() do
         Application.get_env(@otp_app, __MODULE__, [])
       end
@@ -55,15 +57,21 @@ defmodule KeycloakEx.Client.User do
       def introspect(access_token) do
         conf = config()
 
+        introspect_val = "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
+
+        Logger.debug("[KeycloakEx.Client.User][introspect] - Request - #{introspect_uri}")
+
         resp =
           HTTPoison.post(
             "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
-            "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}",
+            introspect_val,
             [
               {"Accept", "application/json"},
               {"Content-Type", "application/x-www-form-urlencoded"}
             ]
           )
+
+        Logger.debug("[KeycloakEx.Client.User][introspect] - Response - #{inspect(resp)}")
 
         case resp do
           {:ok, poison_response} ->
