@@ -1,9 +1,13 @@
 defmodule KeycloakEx.VerifyBearerToken do
   import Plug.Conn
 
+  require Logger
+
   def init(opts), do: opts
 
   defp redirect_303(conn, url) do
+    Logger.debug("[Plug][KeycloakEx.VerifyBearerToken] - No Token!")
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(303, Jason.encode!(%{"error" => "303", "error_description" => "Re-direct", "url" => url}))
@@ -11,6 +15,8 @@ defmodule KeycloakEx.VerifyBearerToken do
   end
 
   defp redirect_401(conn) do
+    Logger.debug("[Plug][KeycloakEx.VerifyBearerToken] - Unauthorised Token!")
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(401, Jason.encode!(%{"error" => "401", "error_description" => "Unauthorised"}))
@@ -41,6 +47,8 @@ defmodule KeycloakEx.VerifyBearerToken do
   end
 
   def call(conn, opts) do
+    Logger.debug("[Plug][KeycloakEx.VerifyBearerToken] - Check Token!")
+
     conn
     |> fetch_bearer()
     |> check_token(conn, opts[:client])
