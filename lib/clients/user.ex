@@ -59,7 +59,7 @@ defmodule KeycloakEx.Client.User do
 
         introspect_val = "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
 
-        Logger.debug("[KeycloakEx.Client.User][introspect] - Request - #{introspect_uri}")
+        Logger.debug("[KeycloakEx.Client.User][introspect] - Request - #{introspect_val}")
 
         resp =
           HTTPoison.post(
