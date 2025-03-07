@@ -21,11 +21,15 @@ defmodule KeycloakEx.VerifySessionToken do
 
   defp check_token_state(t, conn, client) do
     case client.introspect(t.access_token) do
-      {:ok, _resp} ->
-          conn
+      {:ok, %{"active" => true} = _resp} ->
+        conn
 
       err ->
-          err
+        Logger.error("[VerifySessionToken:introspect] - #{inspect(err)}")
+
+        conn
+        |> Phoenix.Controller.redirect(external: client.authorize_url!())
+        |> halt()
     end
   end
 
