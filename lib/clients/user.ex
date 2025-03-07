@@ -18,6 +18,7 @@ defmodule KeycloakEx.Client.User do
         OAuth2.Client.new([
           strategy: __MODULE__,
           client_id: conf[:client_id],
+          client_secret: conf[:client_secret],
           redirect_uri: "#{conf[:site]}/login_cb",
           site: conf[:site],
           authorize_url: "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/auth",
