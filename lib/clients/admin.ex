@@ -15,8 +15,7 @@ defmodule KeycloakEx.Client.Admin do
           strategy: OAuth2.Strategy.Password,
           client_id: conf[:client_id],
           client_secret: conf[:client_secret],
-          token_url:
-            "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token"
+          token_url: "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token"
         )
         |> OAuth2.Client.put_serializer("application/json", Jason)
       end

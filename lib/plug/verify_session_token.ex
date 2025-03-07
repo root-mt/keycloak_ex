@@ -10,13 +10,14 @@ defmodule KeycloakEx.VerifySessionToken do
       {:ok, refresh_token} ->
         conn
         |> put_session(:token, refresh_token.token)
+
       {:error, err} ->
         Logger.error("[VerifySessionToken:refresh_token] - #{inspect(err)}")
+
         conn
         |> Phoenix.Controller.redirect(external: client.authorize_url!())
         |> halt()
     end
-
   end
 
   defp check_token_state(t, conn, client) do

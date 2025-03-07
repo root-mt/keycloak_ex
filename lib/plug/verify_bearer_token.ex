@@ -10,7 +10,10 @@ defmodule KeycloakEx.VerifyBearerToken do
 
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(303, Jason.encode!(%{"error" => "303", "error_description" => "Re-direct", "url" => url}))
+    |> send_resp(
+      303,
+      Jason.encode!(%{"error" => "303", "error_description" => "Re-direct", "url" => url})
+    )
     |> halt
   end
 
@@ -30,8 +33,8 @@ defmodule KeycloakEx.VerifyBearerToken do
 
   defp check_token(t, conn, client) do
     case client.introspect(t) do
-      {:ok, resp} ->
-        if resp["active"] == true, do: conn, else: redirect_401(conn)
+      {:ok, %{"active" => true} = _resp} ->
+        conn
 
       _err ->
         redirect_401(conn)

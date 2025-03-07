@@ -1,21 +1,21 @@
 # Intro
 
-A Keycloak client to easily manage authenetication, with minimum effort. KeycloakEx is made up of clients and plugs. There are 2 clients:
+A Keycloak client to easily manage authentication, with minimum effort. KeycloakEx is made up of clients and plugs. There are 2 clients:
 
-* `KeycloakEx.Client.User` - Requires a client to be setup in keycloak and for security should be the primary client to be used. The client is utilised to verify tokens and redirect if the token is incorrect.
-* `KeycloakEx.Client.Admin` - Admin Client to easily connect with keycload admin REST API, so as to be able to manage keycloak or get information that is not possible from clients.
+* `KeycloakEx.Client.User` - Requires a client to be setup in keycloak and for security should be the primary client to be used. The client is utilized to verify tokens and redirect if the token is incorrect.
+* `KeycloakEx.Client.Admin` - Admin Client to easily connect with Keycloak admin REST API, so as to be able to manage keycloak or get information that is not possible from clients.
 
-There are also 2 plugs. Each usefull in different scenarios:
+There are also 2 plugs. Each useful in different scenarios:
 
-* `KeycloakEx.VerifyBearerToken` - Ideal for API scenarios where the token is not managed by the backend. Where the token is received in the header  as authorisation bearer token. The plug will verify  the validty of the token and responde accordingly.
+* `KeycloakEx.VerifyBearerToken` - Ideal for API scenarios where the token is not managed by the backend. Where the token is received in the header  as authorization bearer token. The plug will verify  the validity of the token and respond accordingly.
         
 * `KeycloakEx.VerifySessionToken` - Ideal for Phoenix HTML/Live views but the token is managed by the backend. Plug would manage token in the session.
   
 **NOTE**
 
-  From keycloak 18 there where a number of update one of which is the removel of "auth" from the host_uri.
-  The plugin was update to remove /auth from the uri by default. So if you are utilising an older version of
-  Keycloak its importat to add "/auth" as part of the host_uri ex:  host_uri: "http://localhost:8081/auth"
+  From keycloak 18 there where a number of update one of which is the removal of "auth" from the host_uri.
+  The plugin was update to remove /auth from the uri by default. So if you are utilizing an older version of
+  Keycloak its important to add "/auth" as part of the host_uri ex:  host_uri: "http://localhost:8081/auth"
 
 # Setup
 
@@ -58,17 +58,17 @@ Create module with the user client code
 
 ## Plugs
 
-As mentioned in the introduction the library has 2 different plugs which can be used in different scenarions.
+As mentioned in the introduction the library has 2 different plugs which can be used in different scenarios.
 
 ### Verify Authorization Bearer Access Token
 
-In the case when the access token is handled by a third party such as the front-end. Utilise the VerifyBearerToken, the plug would check the token and introspect the values of it and redirect if incorret.
+In the case when the access token is handled by a third party such as the front-end. Utilize the VerifyBearerToken, the plug would check the token and introspect the values of it and redirect if incorrect.
 
     plug KeycloakEx.VerifyBearerToken, client: TestApp.KeycloakClient
 
 ### Manage token from the backend.
 
-In the case where the access token is managed by the backend in the plug session, utilise the VerifySessionToken.
+In the case where the access token is managed by the backend in the plug session, utilize the VerifySessionToken.
 
     plug KeycloakEx.VerifySessionToken, client: TestApp.KeycloakClient
 
