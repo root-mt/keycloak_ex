@@ -12,4 +12,5 @@ config :keycloak, Keycloak.Clients.User,
   realm: "keycloak-ex",
   client_id: "keycloak-ex",
   site: "https://localhost:4002",
-  scope: "keycloak_scope"
+  scope: "keycloak_scope",
+  client_secret: "asdfsdfdsffsdfsdfs"
