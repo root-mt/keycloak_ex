@@ -1,5 +1,4 @@
 defmodule KeycloakEx.Client.User do
-
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
       @otp_app opts[:otp_app]
@@ -15,14 +14,15 @@ defmodule KeycloakEx.Client.User do
       def new do
         conf = config()
 
-        OAuth2.Client.new([
+        OAuth2.Client.new(
           strategy: __MODULE__,
           client_id: conf[:client_id],
+          client_secret: conf[:client_secret],
           redirect_uri: "#{conf[:site]}/login_cb",
           site: conf[:site],
           authorize_url: "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/auth",
           token_url: "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token"
-        ])
+        )
         |> OAuth2.Client.put_serializer("application/json", Jason)
       end
 
@@ -57,7 +57,8 @@ defmodule KeycloakEx.Client.User do
       def introspect(access_token) do
         conf = config()
 
-        introspect_val = "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
+        introspect_val =
+          "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
 
         Logger.debug("[KeycloakEx.Client.User][introspect] - Request - #{introspect_val}")
 
@@ -77,11 +78,10 @@ defmodule KeycloakEx.Client.User do
           {:ok, poison_response} ->
             {:ok, Jason.decode!(poison_response.body)}
 
-          _err ->
-            {:error}
+          err ->
+            err
         end
       end
     end
   end
-
 end
