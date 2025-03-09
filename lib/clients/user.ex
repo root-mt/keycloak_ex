@@ -57,13 +57,17 @@ defmodule KeycloakEx.Client.User do
       def introspect(access_token) do
         conf = config()
 
-        introspect_val =
-          "client_secret=#{conf[:client_secret]}&client_id=#{conf[:client_id]}&token=#{access_token}"
+        introspect_val = %{
+          client_secret: conf[:client_secret],
+          client_id: conf[:client_id],
+          token: access_token
+        }
 
         Logger.debug("[KeycloakEx.Client.User][introspect] - Request - #{introspect_val}")
 
         resp =
-          HTTPoison.post(
+          OAuth2.Client.post(
+            new(),
             "#{conf[:host_uri]}/realms/#{conf[:realm]}/protocol/openid-connect/token/introspect",
             introspect_val,
             [

@@ -27,9 +27,10 @@ defmodule KeycloakEx.MixProject do
   defp deps do
     [
       {:oauth2, "~> 2.0"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.0"},
       {:phoenix, "~> 1.5", optional: true},
+      {:mint, "~> 1.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end

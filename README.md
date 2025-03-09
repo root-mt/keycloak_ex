@@ -28,7 +28,8 @@ To create a User Client. Add the following snippet in a config.exs file:
         client_id: "testapp-portal",
         site: "http://localhost:4000",
         scope: "testapp_scope",
-        host_uri: "http://localhost:8081"
+        host_uri: "http://localhost:8081",
+        client_secret: "afdasfasfsf"
 
 Create module with the user client code
 

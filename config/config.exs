@@ -1,6 +1,7 @@
 import Config
 
 config :keycloak, :host_uri, "http://localhost:8081"
+config :oauth2, adapter: Tesla.Adapter.Mint
 
 config :keycloak, Keycloak.Clients.Admin,
   realm: "master",
