@@ -46,7 +46,6 @@ Create module with the user client code
       username: "admin",
       password: "test123!",
       client_id: "admin-cli",
-      client_secret: "83bf8d8e-e608-477b-b812-48b9ac4aa43a",
       host_uri: "http://localhost:8081"
 
   Create module with the admin client code

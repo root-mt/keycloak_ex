@@ -29,8 +29,8 @@ defmodule KeycloakEx.MixProject do
       {:oauth2, "~> 2.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:httpoison, "~> 1.7"}
+      {:phoenix, "~> 1.5", optional: true},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
