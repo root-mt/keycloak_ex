@@ -63,7 +63,9 @@ defmodule KeycloakEx.Client.User do
           token: access_token
         }
 
-        Logger.debug("[KeycloakEx.Client.User][introspect] - Request - #{introspect_val}")
+        Logger.debug(
+          "[KeycloakEx.Client.User][introspect] - Request - #{inspect(introspect_val)}"
+        )
 
         resp =
           OAuth2.Client.post(
@@ -79,8 +81,8 @@ defmodule KeycloakEx.Client.User do
         Logger.debug("[KeycloakEx.Client.User][introspect] - Response - #{inspect(resp)}")
 
         case resp do
-          {:ok, poison_response} ->
-            {:ok, Jason.decode!(poison_response.body)}
+          {:ok, %{body: body}} ->
+            {:ok, body}
 
           err ->
             err
