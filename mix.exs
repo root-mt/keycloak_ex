@@ -31,6 +31,7 @@ defmodule KeycloakEx.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:phoenix, "~> 1.5", optional: true},
       {:mint, "~> 1.0"},
+      {:jose, "~> 1.11"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end

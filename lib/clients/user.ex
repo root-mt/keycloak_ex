@@ -54,6 +54,19 @@ defmodule KeycloakEx.Client.User do
         |> OAuth2.Client.refresh_token()
       end
 
+      def get_request_realm(realm, url, body \\ nil) do
+        conf = config()
+
+       OAuth2.Client.get(
+          new(),
+          "#{conf[:host_uri]}/realms/#{realm}/#{url}",
+          [
+            # {"Authorization", "Bearer #{get_token().token.access_token}"},
+            {"Accept", "application/json"}
+          ]
+        )
+      end
+
       def introspect(access_token) do
         conf = config()
 
@@ -87,6 +100,13 @@ defmodule KeycloakEx.Client.User do
           err ->
             err
         end
+      end
+
+
+      def get_jws() do
+        conf = config()
+
+        get_request_realm(conf[:realm], "protocol/openid-connect/certs")
       end
     end
   end
