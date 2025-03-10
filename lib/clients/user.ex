@@ -81,8 +81,8 @@ defmodule KeycloakEx.Client.User do
         Logger.debug("[KeycloakEx.Client.User][introspect] - Response - #{inspect(resp)}")
 
         case resp do
-          {:ok, poison_response} ->
-            {:ok, Jason.decode!(poison_response.body)}
+          {:ok, %{body: body}} ->
+            {:ok, body}
 
           err ->
             err
