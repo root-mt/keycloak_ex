@@ -26,7 +26,7 @@ defmodule KeycloakEx.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:oauth2, "~> 2.0"},
+      {:oauth2, "~> 2.1"},
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.0"},
       {:phoenix, "~> 1.5", optional: true},
