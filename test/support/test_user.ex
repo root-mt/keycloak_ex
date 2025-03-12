@@ -1,4 +1,4 @@
-defmodule TestAdmin.KeycloakUser do
+defmodule KeycloakEx.TestUser do
   # Test module for Key
 
   use KeycloakEx.Client.User,
