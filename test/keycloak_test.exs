@@ -8,7 +8,6 @@ defmodule KeycloakTest do
     :ok
   end
 
-
   describe "Keycloak Admin" do
     test "config/0" do
       assert TestAdmin.config() == TestHelpers.test_admin()
