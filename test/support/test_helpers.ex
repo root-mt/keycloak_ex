@@ -97,7 +97,7 @@ defmodule KeycloakEx.TestHelpers do
       LogWaitStrategy.new(
         ~r/Running the server in development mode*/,
         # time out
-        200_000
+        800_000
       )
     )
   end
