@@ -13,6 +13,8 @@ defmodule KeycloakTest do
              postgres_container_id,
              to_string(postgres_host_port)
            ) do
+      TestHelpers.setup_user_and_admin_config(keycloak_host_port)
+
       {:ok,
        %{
          keycloak_host_port: keycloak_host_port,
@@ -25,8 +27,6 @@ defmodule KeycloakTest do
         :error
     end
   end
-
-
 
   # Uncomment the test below to run an indefinite test to experiment with mock containers from outside the test environment.
 
@@ -45,14 +45,30 @@ defmodule KeycloakTest do
   # end
 
   describe "Keycloak Admin" do
-    test "config/0" do
-      assert TestAdmin.config() == TestHelpers.test_admin()
+    test "config/0", %{keycloak_host_port: keycloak_host_port} do
+      assert TestAdmin.config() == TestHelpers.test_admin(keycloak_host_port)
     end
-  end
 
-  describe "Keycloak User" do
-    test "config/0" do
-      assert TestUser.config() == TestHelpers.test_user()
+    test "new/0", %{keycloak_host_port: keycloak_host_port} do
+      assert TestAdmin.new() == TestHelpers.test_admin_oauth2_client(keycloak_host_port)
+    end
+
+    test "get_clients" do
+      {ok, r} = TestAdmin.get_clients("test-realm")
+
+      expected_clients =
+        MapSet.new([
+          "account",
+          "account-console",
+          "admin-cli",
+          "broker",
+          "realm-management",
+          "security-admin-console",
+          "test-client"
+        ])
+
+      actual_clients = MapSet.new(Enum.map(r.body, & &1["clientId"]))
+      assert expected_clients == actual_clients
     end
   end
 end
