@@ -1,0 +1,48 @@
+{
+    "realm": "test-realm",
+    "enabled": true,
+    "users": [
+      {
+        "username": "AdminUser1",
+        "enabled": true,
+        "emailVerified": true,
+        "credentials": [
+          {
+            "type": "password",
+            "value": "admin123"
+          }
+        ],
+        "realmRoles": ["admin"]
+      },
+      {
+        "username": "NormalUser1",
+        "enabled": true,
+        "emailVerified": true,
+        "credentials": [
+          {
+            "type": "password",
+            "value": "user123"
+          }
+        ],
+        "realmRoles": ["user"]
+      }
+    ],
+    "roles": {
+      "realm": [
+        {
+          "name": "admin"
+        },
+        {
+          "name": "user"
+        }
+      ]
+    },
+    "clients": [
+      {
+        "clientId": "test-client",
+        "publicClient": true,
+        "redirectUris": ["*"],
+        "directAccessGrantsEnabled": true
+      }
+    ]
+  }

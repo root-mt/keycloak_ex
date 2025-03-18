@@ -10,10 +10,14 @@ defmodule KeycloakEx.MixProject do
       deps: deps(),
       description: description(),
       package: package(),
+      elixirc_paths: elixirc_paths(Mix.env()),
       name: "keycloak_ex",
       source_url: "https://github.com/root-mt/keycloak_ex"
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help compile.app" to learn about applications.
   def application do
@@ -32,7 +36,8 @@ defmodule KeycloakEx.MixProject do
       {:phoenix, "~> 1.5", optional: true},
       {:mint, "~> 1.0"},
       {:jose, "~> 1.11"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:testcontainers, "~> 1.11", only: :test}
     ]
   end
 
